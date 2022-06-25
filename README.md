@@ -8,18 +8,8 @@ This is a work in progress until we achieve the same functionality dom5 and mode
 
 ## Suggested interface
 
-* Node creation
-  * createTextNode
-  * createCommentNode
-  * createElement
-  * createDocumentFragment
-  * createDocument
 * Tree interaction
-  * replaceNode
-  * removeNode
-  * insertBefore
-  * insertAfter
-  * appendNode
+  * replaceWith
 * Attributes
   * setAttribute
   * getAttribute
@@ -30,35 +20,33 @@ This is a work in progress until we achieve the same functionality dom5 and mode
 * Node interaction
   * getTextContent
   * setTextContent
+  * normalizeNode
 * Traversal
   * query
   * queryAll
-  * 
+  * treeMap
+  * ancestors
+  * previousSiblings
+  * nextSiblings
+  * prior
+  * walk
 
 ## dom5
 
 * Mutation
   * [x] replaceNode
-  * [x] removeNode
-  * [x] insertBefore
-  * [x] insertAfter
-  * [ ] removeNodeSaveChildren
+  * [x] removeNodeSaveChildren - use `replaceWith`
   * [ ] removeFakeRootElements
-  * [x] appendNode
-  * [x] newTextNode
-  * [x] newCommentNode
-  * [x] newElement
-  * [x] newDocumentFragment
 * Iteration
-  * [ ] treeMap
-  * [ ] depthFirst
-  * [ ] depthFirstReversed
-  * [ ] depthFirstIncludingTemplates
-  * [ ] ancestors
-  * [ ] previousSiblings
-  * [ ] prior
-  * [ ] query
-  * [ ] queryAll
+  * [x] treeMap
+  * [x] depthFirst
+  * [x] depthFirstReversed
+  * [x] depthFirstIncludingTemplates
+  * [x] ancestors
+  * [x] previousSiblings
+  * [x] prior
+  * [x] query
+  * [x] queryAll
 * Utilities
   * [x] getTextContent
   * [x] getAttribute
@@ -66,7 +54,7 @@ This is a work in progress until we achieve the same functionality dom5 and mode
   * [x] hasAttribute
   * [x] setAttribute
   * [x] removeAttribute
-  * [ ] normalize
+  * [x] normalize
   * [x] setTextContent
 
 Many of the iteration functions use a predicate concept to allow filtering.
@@ -74,47 +62,13 @@ Many of the iteration functions use a predicate concept to allow filtering.
 ## modernweb
 
 * Mutation
-  * [x] createDocument
-  * [x] createDocumentFragment
-  * [x] createElement
   * [ ] createScript - use `createElement` instead
-  * [x] createCommentNode
-  * [x] appendChild
-  * [x] insertBefore
-  * [ ] setTemplateContent 🔌
-  * [ ] getTemplateContent 🔌
-  * [ ] setDocumentType 🔌
-  * [ ] setDocumentMode 🔌
-  * [ ] getDocumentMode 🔌
-  * [ ] detachNode 🔌
-  * [ ] insertText 🔌
-  * [ ] insertTextBefore 🔌
-  * [ ] adoptAttributes 🔌
-  * [ ] setNodeSourceCodeLocation 🔌
-  * [ ] updateNodeSourceCodeLocation 🔌
   * [x] setAttribute
   * [ ] setAttributes - use `setAttribute` instead
-  * [x] remove
   * [x] removeAttribute
   * [ ] prependToDocument
   * [ ] appendToDocument
 * Utilities
-  * [ ] getFirstChild 🔌
-  * [ ] getChildNodes 🔌
-  * [ ] getParentNode 🔌
-  * [ ] getAttrList 🔌
-  * [ ] getTagName 🔌
-  * [ ] getNamespaceURI 🔌
-  * [ ] getTextNodeContent 🔌
-  * [ ] getCommentNodeContent 🔌
-  * [ ] getDocumentTypeNodeName 🔌
-  * [ ] getDocumentTypeNodePublicId 🔌
-  * [ ] getDocumentTypeNodeSystemId 🔌
-  * [ ] isTextNode 🔌
-  * [ ] isCommentNode 🔌
-  * [ ] isDocumentTypeNode 🔌
-  * [ ] isElementNode 🔌
-  * [ ] getNodeSourceCodeLocation 🔌
   * [ ] isHtmlFragment
   * [x] hasAttribute
   * [x] getAttribute
@@ -124,7 +78,3 @@ Many of the iteration functions use a predicate concept to allow filtering.
   * [x] findNodes
   * [ ] findElement - use `findNode` with a type guard
   * [ ] findElements - use `findNodes` with a type guard
-
-Key:
-
-* 🔌 - functionality already provided by parse5 adapter
