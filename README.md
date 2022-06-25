@@ -14,7 +14,7 @@ This is a work in progress until we achieve the same functionality dom5 and mode
   * createElement
   * createDocumentFragment
   * createDocument
-* Mutation
+* Tree interaction
   * replaceNode
   * removeNode
   * insertBefore
@@ -27,9 +27,13 @@ This is a work in progress until we achieve the same functionality dom5 and mode
   * removeAttribute
   * getAttributeIndex
   * getAttributes
-* Node mutation
+* Node interaction
   * getTextContent
   * setTextContent
+* Traversal
+  * query
+  * queryAll
+  * 
 
 ## dom5
 
@@ -38,23 +42,23 @@ This is a work in progress until we achieve the same functionality dom5 and mode
   * [x] removeNode
   * [x] insertBefore
   * [x] insertAfter
-  * [] removeNodeSaveChildren
-  * [] removeFakeRootElements
+  * [ ] removeNodeSaveChildren
+  * [ ] removeFakeRootElements
   * [x] appendNode
   * [x] newTextNode
   * [x] newCommentNode
   * [x] newElement
   * [x] newDocumentFragment
 * Iteration
-  * [] treeMap
-  * [] depthFirst
-  * [] depthFirstReversed
-  * [] depthFirstIncludingTemplates
-  * [] ancestors
-  * [] previousSiblings
-  * [] prior
-  * [] query
-  * [] queryAll
+  * [ ] treeMap
+  * [ ] depthFirst
+  * [ ] depthFirstReversed
+  * [ ] depthFirstIncludingTemplates
+  * [ ] ancestors
+  * [ ] previousSiblings
+  * [ ] prior
+  * [ ] query
+  * [ ] queryAll
 * Utilities
   * [x] getTextContent
   * [x] getAttribute
@@ -62,7 +66,7 @@ This is a work in progress until we achieve the same functionality dom5 and mode
   * [x] hasAttribute
   * [x] setAttribute
   * [x] removeAttribute
-  * [] normalize
+  * [ ] normalize
   * [x] setTextContent
 
 Many of the iteration functions use a predicate concept to allow filtering.
@@ -73,53 +77,53 @@ Many of the iteration functions use a predicate concept to allow filtering.
   * [x] createDocument
   * [x] createDocumentFragment
   * [x] createElement
-  * [] createScript - use `createElement` instead
+  * [ ] createScript - use `createElement` instead
   * [x] createCommentNode
   * [x] appendChild
   * [x] insertBefore
-  * [] setTemplateContent 🔌
-  * [] getTemplateContent 🔌
-  * [] setDocumentType 🔌
-  * [] setDocumentMode 🔌
-  * [] getDocumentMode 🔌
-  * [] detachNode 🔌
-  * [] insertText 🔌
-  * [] insertTextBefore 🔌
-  * [] adoptAttributes 🔌
-  * [] setNodeSourceCodeLocation 🔌
-  * [] updateNodeSourceCodeLocation 🔌
+  * [ ] setTemplateContent 🔌
+  * [ ] getTemplateContent 🔌
+  * [ ] setDocumentType 🔌
+  * [ ] setDocumentMode 🔌
+  * [ ] getDocumentMode 🔌
+  * [ ] detachNode 🔌
+  * [ ] insertText 🔌
+  * [ ] insertTextBefore 🔌
+  * [ ] adoptAttributes 🔌
+  * [ ] setNodeSourceCodeLocation 🔌
+  * [ ] updateNodeSourceCodeLocation 🔌
   * [x] setAttribute
-  * [] setAttributes
+  * [ ] setAttributes - use `setAttribute` instead
   * [x] remove
   * [x] removeAttribute
-  * [] prependToDocument
-  * [] appendToDocument
+  * [ ] prependToDocument
+  * [ ] appendToDocument
 * Utilities
-  * [] getFirstChild
-  * [] getChildNodes
-  * [] getParentNode
-  * [] getAttrList
-  * [] getTagName
-  * [] getNamespaceURI
-  * [] getTextNodeContent
-  * [] getCommentNodeContent
-  * [] getDocumentTypeNodeName
-  * [] getDocumentTypeNodePublicId
-  * [] getDocumentTypeNodeSystemId
-  * [] isTextNode
-  * [] isCommentNode
-  * [] isDocumentTypeNode
-  * [] isElementNode
-  * [] getNodeSourceCodeLocation
-  * [] isHtmlFragment
+  * [ ] getFirstChild 🔌
+  * [ ] getChildNodes 🔌
+  * [ ] getParentNode 🔌
+  * [ ] getAttrList 🔌
+  * [ ] getTagName 🔌
+  * [ ] getNamespaceURI 🔌
+  * [ ] getTextNodeContent 🔌
+  * [ ] getCommentNodeContent 🔌
+  * [ ] getDocumentTypeNodeName 🔌
+  * [ ] getDocumentTypeNodePublicId 🔌
+  * [ ] getDocumentTypeNodeSystemId 🔌
+  * [ ] isTextNode 🔌
+  * [ ] isCommentNode 🔌
+  * [ ] isDocumentTypeNode 🔌
+  * [ ] isElementNode 🔌
+  * [ ] getNodeSourceCodeLocation 🔌
+  * [ ] isHtmlFragment
   * [x] hasAttribute
   * [x] getAttribute
   * [x] getAttributes
 * Iteration
-  * [] findNode
-  * [] findNodes
-  * [] findElement
-  * [] findElements
+  * [x] findNode
+  * [x] findNodes
+  * [ ] findElement - use `findNode` with a type guard
+  * [ ] findElements - use `findNodes` with a type guard
 
 Key:
 
