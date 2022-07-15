@@ -6,12 +6,13 @@
   "files": [
     "lib/!(test)"
   ],
+  "type": "module",
   "scripts": {
     "clean": "rimraf ./lib",
     "lint": "eslint \"src/**/*.ts\"",
     "prebuild": "npm run clean",
     "build": "tsc",
-    "test": "uvu lib/test",
+    "test": "uvu lib/test .js$",
     "format": "prettier --write \"src/**/*.ts\"",
     "prepare": "npm run build",
     "prepublishOnly": "npm run lint && npm run test"
