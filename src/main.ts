@@ -307,6 +307,8 @@ export function* ancestors(node: Node): IterableIterator<Node> {
 
     if (isChildNode(current)) {
       current = current.parentNode;
+    } else {
+      current = null;
     }
   }
 }
