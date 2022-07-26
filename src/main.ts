@@ -111,12 +111,23 @@ export function replaceWith(
   ...replacements: ChildNode[]
 ): void {
   if (node.parentNode) {
-    spliceChildren(
-      node.parentNode,
-      node.parentNode.childNodes.indexOf(node),
-      1,
-      ...replacements
-    );
+    const parentNode = node.parentNode;
+    const index = parentNode.childNodes.indexOf(node);
+
+    if (index > -1) {
+      spliceChildren(
+        parentNode,
+        parentNode.childNodes.indexOf(node),
+        1,
+        ...replacements
+      );
+
+      for (const replacement of replacements) {
+        replacement.parentNode = parentNode;
+      }
+    }
+
+    node.parentNode = null;
   }
 }
 
@@ -212,7 +223,7 @@ export function getTextContent(node: Node): string {
  * @param {string} value Text contents of the new node
  * @return {TextNode}
  */
-function createTextNode(value: string): TextNode {
+export function createTextNode(value: string): TextNode {
   return {
     nodeName: NodeType.Text,
     value,

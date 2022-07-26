@@ -380,10 +380,432 @@ test('spliceChildren', async (t) => {
     const node: TextNode = {
       nodeName: NodeType.Text,
       parentNode: null,
-      value: 'three'
+      value: 'some text'
     };
     const result = main.spliceChildren(node, 0, 1);
 
     assert.strictEqual(result.length, 0);
+  });
+});
+
+test('replaceWith', async (t) => {
+  await t.test('ignores nodes which have no parent', () => {
+    const node: TextNode = {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'some text'
+    };
+
+    main.replaceWith(node, {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'some other text'
+    });
+
+    assert.strictEqual(node.parentNode, null);
+  });
+
+  await t.test('replaces node with specified nodes', () => {
+    const child1: TextNode = {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'one'
+    };
+    const child2: TextNode = {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'two'
+    };
+    const child3: TextNode = {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'three'
+    };
+    const node: DocumentFragment = {
+      nodeName: NodeType.DocumentFragment,
+      childNodes: [child1, child2]
+    };
+
+    child1.parentNode = node;
+    child2.parentNode = node;
+
+    main.replaceWith(child2, child3);
+
+    assert.strictEqual(node.childNodes.length, 2);
+    assert.strictEqual(node.childNodes[0], child1);
+    assert.strictEqual(node.childNodes[1], child3);
+    assert.strictEqual(child3.parentNode, node);
+    assert.strictEqual(child2.parentNode, null);
+  });
+
+  await t.test('leaves childNodes untouched if child missing', () => {
+    const child1: TextNode = {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'one'
+    };
+    const child2: TextNode = {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'two'
+    };
+    const node: DocumentFragment = {
+      nodeName: NodeType.DocumentFragment,
+      childNodes: []
+    };
+
+    child1.parentNode = node;
+
+    main.replaceWith(child1, child2);
+
+    assert.strictEqual(node.childNodes.length, 0);
+    assert.strictEqual(child1.parentNode, null);
+  });
+});
+
+test('setAttribute', async (t) => {
+  await t.test('adds attribute to elemet attrs', () => {
+    const node: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [],
+      namespaceURI: NS.HTML,
+      childNodes: []
+    };
+
+    main.setAttribute(node, 'ping-pong', 'boing');
+
+    assert.deepStrictEqual(node.attrs, [{name: 'ping-pong', value: 'boing'}]);
+  });
+});
+
+test('getAttribute', async (t) => {
+  await t.test('retrieves specified attribute value', () => {
+    const node: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [{name: 'some-attr', value: 'some-value'}],
+      namespaceURI: NS.HTML,
+      childNodes: []
+    };
+
+    const result = main.getAttribute(node, 'some-attr');
+
+    assert.strictEqual(result, 'some-value');
+  });
+
+  await t.test('null if attribute does not exist', () => {
+    const node: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [],
+      namespaceURI: NS.HTML,
+      childNodes: []
+    };
+
+    const result = main.getAttribute(node, 'non-existent');
+
+    assert.strictEqual(result, null);
+  });
+
+  await t.test('retrieves empty string values', () => {
+    const node: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [{name: 'some-attr', value: ''}],
+      namespaceURI: NS.HTML,
+      childNodes: []
+    };
+
+    const result = main.getAttribute(node, 'some-attr');
+
+    assert.strictEqual(result, '');
+  });
+});
+
+test('hasAttribute', async (t) => {
+  await t.test('true if specified attribute exists', () => {
+    const node: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [{name: 'some-attr', value: 'some-value'}],
+      namespaceURI: NS.HTML,
+      childNodes: []
+    };
+
+    const result = main.hasAttribute(node, 'some-attr');
+
+    assert.strictEqual(result, true);
+  });
+
+  await t.test('false if specified attribute does not exist', () => {
+    const node: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [],
+      namespaceURI: NS.HTML,
+      childNodes: []
+    };
+
+    const result = main.hasAttribute(node, 'some-attr');
+
+    assert.strictEqual(result, false);
+  });
+});
+
+test('removeAttribute', async (t) => {
+  await t.test('removes specified attribute', () => {
+    const node: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [{name: 'some-attr', value: 'some-value'}],
+      namespaceURI: NS.HTML,
+      childNodes: []
+    };
+
+    main.removeAttribute(node, 'some-attr');
+
+    assert.strictEqual(node.attrs.length, 0);
+  });
+
+  await t.test('ignores already missing attributes', () => {
+    const node: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [],
+      namespaceURI: NS.HTML,
+      childNodes: []
+    };
+
+    main.removeAttribute(node, 'some-attr');
+
+    assert.strictEqual(node.attrs.length, 0);
+  });
+});
+
+test('getAttributeIndex', async (t) => {
+  await t.test('retrieves index of specified attribute', () => {
+    const node: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [
+        {name: 'attr-0', value: 'some-value'},
+        {name: 'attr-1', value: 'some-value'}
+      ],
+      namespaceURI: NS.HTML,
+      childNodes: []
+    };
+
+    const index0 = main.getAttributeIndex(node, 'attr-0');
+    const index1 = main.getAttributeIndex(node, 'attr-1');
+
+    assert.strictEqual(index0, 0);
+    assert.strictEqual(index1, 1);
+  });
+
+  await t.test('-1 if attribute missing', () => {
+    const node: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [],
+      namespaceURI: NS.HTML,
+      childNodes: []
+    };
+
+    const result = main.getAttributeIndex(node, 'some-attr');
+
+    assert.strictEqual(result, -1);
+  });
+});
+
+test('createTextNode', async (t) => {
+  await t.test('creates a text node with specified content', () => {
+    const result = main.createTextNode('doop');
+
+    assert.deepStrictEqual(result, {
+      nodeName: '#text',
+      value: 'doop',
+      parentNode: null
+    });
+  });
+});
+
+test('getTextContent', async (t) => {
+  await t.test('returns data of comment', () => {
+    const node: CommentNode = {
+      nodeName: NodeType.Comment,
+      parentNode: null,
+      data: 'some text'
+    };
+
+    const result = main.getTextContent(node);
+
+    assert.strictEqual(result, 'some text');
+  });
+
+  await t.test('returns value of text node', () => {
+    const node: TextNode = {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'some text'
+    };
+
+    const result = main.getTextContent(node);
+
+    assert.strictEqual(result, 'some text');
+  });
+
+  await t.test('concats all text-like children', () => {
+    const child1: TextNode = {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'text node'
+    };
+    const child2: CommentNode = {
+      nodeName: NodeType.Comment,
+      parentNode: null,
+      data: 'comment node'
+    };
+    const node: DocumentFragment = {
+      nodeName: NodeType.DocumentFragment,
+      childNodes: [child1, child2]
+    };
+
+    const result = main.getTextContent(node);
+
+    assert.strictEqual(result, 'text nodecomment node');
+  });
+
+  await t.test('ignores non-text children', () => {
+    const child1: TextNode = {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'text node'
+    };
+    const child2: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [],
+      namespaceURI: NS.HTML,
+      childNodes: []
+    };
+    const node: DocumentFragment = {
+      nodeName: NodeType.DocumentFragment,
+      childNodes: [child1, child2]
+    };
+
+    const result = main.getTextContent(node);
+
+    assert.strictEqual(result, 'text node');
+  });
+
+  await t.test('concats deep text-like children', () => {
+    const level0Child0: TextNode = {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'level 0'
+    };
+    const level1Child0: TextNode = {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'level 1'
+    };
+    const level2Child0: TextNode = {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'level 2'
+    };
+    const level1Child1: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [],
+      namespaceURI: NS.HTML,
+      childNodes: [level2Child0]
+    };
+    const level0Child1: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [],
+      namespaceURI: NS.HTML,
+      childNodes: [level1Child0, level1Child1]
+    };
+    const node: DocumentFragment = {
+      nodeName: NodeType.DocumentFragment,
+      childNodes: [level0Child0, level0Child1]
+    };
+
+    const result = main.getTextContent(node);
+
+    assert.strictEqual(result, 'level 0level 1level 2');
+  });
+});
+
+test('setTextContent', async (t) => {
+  await t.test('sets data of comment nodes', () => {
+    const node: CommentNode = {
+      nodeName: NodeType.Comment,
+      parentNode: null,
+      data: 'some text'
+    };
+
+    main.setTextContent(node, 'some other text');
+
+    assert.strictEqual(node.data, 'some other text');
+  });
+
+  await t.test('sets value of text nodes', () => {
+    const node: TextNode = {
+      nodeName: NodeType.Text,
+      parentNode: null,
+      value: 'some text'
+    };
+
+    main.setTextContent(node, 'some other text');
+
+    assert.strictEqual(node.value, 'some other text');
+  });
+
+  await t.test('appends text node for parent nodes', () => {
+    const node: DocumentFragment = {
+      nodeName: NodeType.DocumentFragment,
+      childNodes: []
+    };
+
+    main.setTextContent(node, 'some text');
+
+    assert.strictEqual(node.childNodes.length, 1);
+    assert.deepStrictEqual(node.childNodes[0], {
+      nodeName: '#text',
+      value: 'some text',
+      parentNode: node
+    });
+  });
+
+  await t.test('ignores document type nodes', () => {
+    const node: DocumentType = {
+      nodeName: NodeType.DocumentType,
+      parentNode: null,
+      name: 'some-name',
+      publicId: 'some-name',
+      systemId: 'some-name'
+    };
+    const expected = {...node};
+
+    main.setTextContent(node, 'bleep');
+
+    assert.deepStrictEqual(node, expected);
   });
 });
