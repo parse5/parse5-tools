@@ -1,13 +1,12 @@
 import {strict as assert} from 'node:assert';
 import test from 'node:test';
 import * as main from '../main.js';
-import {
-  defaultTreeAdapter,
+import {defaultTreeAdapter} from 'parse5';
+import type {
   Document,
   CommentNode,
   Element,
   TextNode,
-  NodeType,
   Template,
   DocumentType,
   DocumentFragment
@@ -44,7 +43,7 @@ test('isTextNode', async (t) => {
 test('isDocument', async (t) => {
   await t.test('true for document nodes', () => {
     const result = main.isDocument({
-      nodeName: NodeType.Document,
+      nodeName: '#document',
       mode: DOCUMENT_MODE.NO_QUIRKS,
       childNodes: []
     });
@@ -54,7 +53,7 @@ test('isDocument', async (t) => {
 
   await t.test('false for non-document nodes', () => {
     const result = main.isDocument({
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       value: 'pewpew',
       parentNode: null
     });
@@ -66,7 +65,7 @@ test('isDocument', async (t) => {
 test('isDocumentFragment', async (t) => {
   await t.test('true for document fragment nodes', () => {
     const result = main.isDocumentFragment({
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: []
     });
 
@@ -75,7 +74,7 @@ test('isDocumentFragment', async (t) => {
 
   await t.test('false for non-document-fragment nodes', () => {
     const result = main.isDocument({
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       value: 'pewpew',
       parentNode: null
     });
@@ -90,7 +89,7 @@ test('isTemplateNode', async (t) => {
       nodeName: 'template',
       tagName: 'template',
       content: {
-        nodeName: NodeType.DocumentFragment,
+        nodeName: '#document-fragment',
         childNodes: []
       },
       attrs: [],
@@ -104,7 +103,7 @@ test('isTemplateNode', async (t) => {
 
   await t.test('false for non-document-fragment nodes', () => {
     const result = main.isTemplateNode({
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       value: 'pewpew',
       parentNode: null
     });
@@ -122,7 +121,7 @@ test('appendChild', async (t) => {
 test('isParentNode', async (t) => {
   await t.test('true for document nodes', () => {
     const node: Document = {
-      nodeName: NodeType.Document,
+      nodeName: '#document',
       mode: DOCUMENT_MODE.NO_QUIRKS,
       childNodes: []
     };
@@ -131,7 +130,7 @@ test('isParentNode', async (t) => {
 
   await t.test('true for document fragment nodes', () => {
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: []
     };
     assert.strictEqual(main.isParentNode(node), true);
@@ -154,7 +153,7 @@ test('isParentNode', async (t) => {
       nodeName: 'template',
       tagName: 'template',
       content: {
-        nodeName: NodeType.DocumentFragment,
+        nodeName: '#document-fragment',
         childNodes: []
       },
       attrs: [],
@@ -167,7 +166,7 @@ test('isParentNode', async (t) => {
 
   await t.test('false for text nodes', () => {
     const node: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'well hello there'
     };
@@ -197,7 +196,7 @@ test('isChildNode', async (t) => {
       namespaceURI: NS.HTML,
       childNodes: [],
       content: {
-        nodeName: NodeType.DocumentFragment,
+        nodeName: '#document-fragment',
         childNodes: []
       }
     };
@@ -206,7 +205,7 @@ test('isChildNode', async (t) => {
 
   await t.test('true for comment nodes', () => {
     const node: CommentNode = {
-      nodeName: NodeType.Comment,
+      nodeName: '#comment',
       parentNode: null,
       data: 'oogaboogah'
     };
@@ -215,7 +214,7 @@ test('isChildNode', async (t) => {
 
   await t.test('true for text nodes', () => {
     const node: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'well hello there'
     };
@@ -224,7 +223,7 @@ test('isChildNode', async (t) => {
 
   await t.test('true for document type nodes', () => {
     const node: DocumentType = {
-      nodeName: NodeType.DocumentType,
+      nodeName: '#documentType',
       parentNode: null,
       name: 'cats',
       publicId: 'c-a-t-s',
@@ -235,7 +234,7 @@ test('isChildNode', async (t) => {
 
   await t.test('false for document nodes', () => {
     const node: Document = {
-      nodeName: NodeType.Document,
+      nodeName: '#document',
       mode: DOCUMENT_MODE.NO_QUIRKS,
       childNodes: []
     };
@@ -246,17 +245,17 @@ test('isChildNode', async (t) => {
 test('spliceChildren', async (t) => {
   await t.test('deletes without new children', () => {
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: '001'
     };
     const child2: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: '010'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child1, child2]
     };
 
@@ -270,22 +269,22 @@ test('spliceChildren', async (t) => {
 
   await t.test('deletes from specified index', () => {
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'one'
     };
     const child2: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'two'
     };
     const child3: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'three'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child1, child2, child3]
     };
 
@@ -300,17 +299,17 @@ test('spliceChildren', async (t) => {
 
   await t.test('appends without deleting if deleteCount is 0', () => {
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'one'
     };
     const child2: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'two'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child1]
     };
 
@@ -324,17 +323,17 @@ test('spliceChildren', async (t) => {
 
   await t.test('appends at specified index', () => {
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'one'
     };
     const child2: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'two'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child1]
     };
 
@@ -348,22 +347,22 @@ test('spliceChildren', async (t) => {
 
   await t.test('deletes then appends new children', () => {
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'one'
     };
     const child2: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'two'
     };
     const child3: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'three'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child1, child2]
     };
 
@@ -378,7 +377,7 @@ test('spliceChildren', async (t) => {
 
   await t.test('ignores nodes which are not parent nodes', () => {
     const node: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'some text'
     };
@@ -391,13 +390,13 @@ test('spliceChildren', async (t) => {
 test('replaceWith', async (t) => {
   await t.test('ignores nodes which have no parent', () => {
     const node: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'some text'
     };
 
     main.replaceWith(node, {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'some other text'
     });
@@ -407,22 +406,22 @@ test('replaceWith', async (t) => {
 
   await t.test('replaces node with specified nodes', () => {
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'one'
     };
     const child2: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'two'
     };
     const child3: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'three'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child1, child2]
     };
 
@@ -440,17 +439,17 @@ test('replaceWith', async (t) => {
 
   await t.test('leaves childNodes untouched if child missing', () => {
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'one'
     };
     const child2: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'two'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: []
     };
 
@@ -643,7 +642,7 @@ test('createTextNode', async (t) => {
 test('getTextContent', async (t) => {
   await t.test('returns data of comment', () => {
     const node: CommentNode = {
-      nodeName: NodeType.Comment,
+      nodeName: '#comment',
       parentNode: null,
       data: 'some text'
     };
@@ -655,7 +654,7 @@ test('getTextContent', async (t) => {
 
   await t.test('returns value of text node', () => {
     const node: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'some text'
     };
@@ -667,17 +666,17 @@ test('getTextContent', async (t) => {
 
   await t.test('concats all text-like children', () => {
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
     const child2: CommentNode = {
-      nodeName: NodeType.Comment,
+      nodeName: '#comment',
       parentNode: null,
       data: 'comment node'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child1, child2]
     };
 
@@ -688,7 +687,7 @@ test('getTextContent', async (t) => {
 
   await t.test('ignores non-text children', () => {
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
@@ -701,7 +700,7 @@ test('getTextContent', async (t) => {
       childNodes: []
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child1, child2]
     };
 
@@ -712,17 +711,17 @@ test('getTextContent', async (t) => {
 
   await t.test('concats deep text-like children', () => {
     const level0Child0: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'level 0'
     };
     const level1Child0: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'level 1'
     };
     const level2Child0: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'level 2'
     };
@@ -743,7 +742,7 @@ test('getTextContent', async (t) => {
       childNodes: [level1Child0, level1Child1]
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [level0Child0, level0Child1]
     };
 
@@ -756,7 +755,7 @@ test('getTextContent', async (t) => {
 test('setTextContent', async (t) => {
   await t.test('sets data of comment nodes', () => {
     const node: CommentNode = {
-      nodeName: NodeType.Comment,
+      nodeName: '#comment',
       parentNode: null,
       data: 'some text'
     };
@@ -768,7 +767,7 @@ test('setTextContent', async (t) => {
 
   await t.test('sets value of text nodes', () => {
     const node: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'some text'
     };
@@ -780,7 +779,7 @@ test('setTextContent', async (t) => {
 
   await t.test('appends text node for parent nodes', () => {
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: []
     };
 
@@ -796,7 +795,7 @@ test('setTextContent', async (t) => {
 
   await t.test('ignores document type nodes', () => {
     const node: DocumentType = {
-      nodeName: NodeType.DocumentType,
+      nodeName: '#documentType',
       parentNode: null,
       name: 'some-name',
       publicId: 'some-name',
@@ -813,23 +812,23 @@ test('setTextContent', async (t) => {
 test('query', async (t) => {
   await t.test('retrieves first matching child', () => {
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'some text'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child1]
     };
 
-    const result = main.query(node, (n) => n.nodeName === NodeType.Text);
+    const result = main.query(node, (n) => n.nodeName === '#text');
 
     assert.strictEqual(result, child1);
   });
 
   await t.test('returns root if it matches', () => {
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: []
     };
     const result = main.query(node, () => true);
@@ -839,12 +838,12 @@ test('query', async (t) => {
 
   await t.test('null when no match', () => {
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'some text'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child1]
     };
 
@@ -855,7 +854,7 @@ test('query', async (t) => {
 
   await t.test('retrieves deep matches', () => {
     const subChild: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
@@ -868,7 +867,7 @@ test('query', async (t) => {
       childNodes: [subChild]
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child]
     };
     const result = main.query(node, (n) => n === subChild);
@@ -878,7 +877,7 @@ test('query', async (t) => {
 
   await t.test('returns self if matches and not parent node', () => {
     const node: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'some text'
     };
@@ -891,18 +890,16 @@ test('query', async (t) => {
 test('queryAll', async (t) => {
   await t.test('retrieves matching nodes', () => {
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'some text'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child1]
     };
 
-    const result = [
-      ...main.queryAll(node, (n) => n.nodeName === NodeType.Text)
-    ];
+    const result = [...main.queryAll(node, (n) => n.nodeName === '#text')];
 
     assert.strictEqual(result.length, 1);
     assert.strictEqual(result[0], child1);
@@ -910,12 +907,12 @@ test('queryAll', async (t) => {
 
   await t.test('retrieves deep matches', () => {
     const subChild0: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
     const subChild1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'another text node'
     };
@@ -928,12 +925,10 @@ test('queryAll', async (t) => {
       childNodes: [subChild0, subChild1]
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child]
     };
-    const result = [
-      ...main.queryAll(node, (n) => n.nodeName === NodeType.Text)
-    ];
+    const result = [...main.queryAll(node, (n) => n.nodeName === '#text')];
 
     assert.strictEqual(result.length, 2);
     assert.strictEqual(result[0], subChild0);
@@ -942,7 +937,7 @@ test('queryAll', async (t) => {
 
   await t.test('returns root if it matches', () => {
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: []
     };
 
@@ -954,7 +949,7 @@ test('queryAll', async (t) => {
 
   await t.test('returns root if it matches and isnt parent-like', () => {
     const node: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
@@ -967,12 +962,12 @@ test('queryAll', async (t) => {
 
   await t.test('returns all nodes if no condition', () => {
     const subChild0: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
     const subChild1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'another text node'
     };
@@ -985,7 +980,7 @@ test('queryAll', async (t) => {
       childNodes: [subChild0, subChild1]
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child]
     };
     const result = [...main.queryAll(node)];
@@ -1001,7 +996,7 @@ test('queryAll', async (t) => {
 test('walkChildren', async (t) => {
   await t.test('yields root when no children', () => {
     const node: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
@@ -1013,17 +1008,17 @@ test('walkChildren', async (t) => {
 
   await t.test('yields direct children', () => {
     const child0: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'another text node'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child0, child1]
     };
     const result = [...main.walkChildren(node)];
@@ -1036,12 +1031,12 @@ test('walkChildren', async (t) => {
 
   await t.test('yields deep children', () => {
     const subChild0: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
     const subChild1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'another text node'
     };
@@ -1054,7 +1049,7 @@ test('walkChildren', async (t) => {
       childNodes: [subChild0, subChild1]
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child]
     };
     const result = [...main.walkChildren(node)];
@@ -1070,7 +1065,7 @@ test('walkChildren', async (t) => {
 test('ancestors', async (t) => {
   await t.test('yields root and ancestors', () => {
     const subSubChild: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
@@ -1091,7 +1086,7 @@ test('ancestors', async (t) => {
       childNodes: [subChild]
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child]
     };
 
@@ -1110,7 +1105,7 @@ test('ancestors', async (t) => {
 
   await t.test('handles missing parentId', () => {
     const child: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
@@ -1125,7 +1120,7 @@ test('ancestors', async (t) => {
 test('previousSiblings', async (t) => {
   await t.test('empty set for non-child-like nodes', () => {
     const node: Document = {
-      nodeName: NodeType.Document,
+      nodeName: '#document',
       mode: DOCUMENT_MODE.NO_QUIRKS,
       childNodes: []
     };
@@ -1137,7 +1132,7 @@ test('previousSiblings', async (t) => {
 
   await t.test('empty set for node with missing parent', () => {
     const node: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
@@ -1149,22 +1144,22 @@ test('previousSiblings', async (t) => {
 
   await t.test('retrieves previous siblings', () => {
     const child0: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
     const child2: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child0, child1, child2]
     };
 
@@ -1182,7 +1177,7 @@ test('previousSiblings', async (t) => {
 test('nextSiblings', async (t) => {
   await t.test('empty set for non-child-like nodes', () => {
     const node: Document = {
-      nodeName: NodeType.Document,
+      nodeName: '#document',
       mode: DOCUMENT_MODE.NO_QUIRKS,
       childNodes: []
     };
@@ -1194,7 +1189,7 @@ test('nextSiblings', async (t) => {
 
   await t.test('empty set for node with missing parent', () => {
     const node: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
@@ -1206,22 +1201,22 @@ test('nextSiblings', async (t) => {
 
   await t.test('retrieves next siblings', () => {
     const child0: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
     const child1: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
     const child2: TextNode = {
-      nodeName: NodeType.Text,
+      nodeName: '#text',
       parentNode: null,
       value: 'text node'
     };
     const node: DocumentFragment = {
-      nodeName: NodeType.DocumentFragment,
+      nodeName: '#document-fragment',
       childNodes: [child0, child1, child2]
     };
 

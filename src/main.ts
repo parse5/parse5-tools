@@ -1,6 +1,5 @@
-import {
-  defaultTreeAdapter,
-  NodeType,
+import {defaultTreeAdapter} from 'parse5';
+import type {
   Element,
   ParentNode,
   CommentNode,
@@ -225,7 +224,7 @@ export function getTextContent(node: Node): string {
  */
 export function createTextNode(value: string): TextNode {
   return {
-    nodeName: NodeType.Text,
+    nodeName: '#text',
     value,
     parentNode: null
   };
