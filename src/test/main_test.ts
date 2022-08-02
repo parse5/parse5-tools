@@ -1,7 +1,7 @@
 import {strict as assert} from 'node:assert';
 import test from 'node:test';
 import * as main from '../main.js';
-import {defaultTreeAdapter} from 'parse5';
+import {defaultTreeAdapter, html} from 'parse5';
 import type {
   Document,
   CommentNode,
@@ -11,7 +11,6 @@ import type {
   DocumentType,
   DocumentFragment
 } from 'parse5/dist/tree-adapters/default.js';
-import {DOCUMENT_MODE, NS} from 'parse5/dist/common/html.js';
 
 test('isElementNode', async (t) => {
   await t.test('delegates to default adapter', () => {
@@ -44,7 +43,7 @@ test('isDocument', async (t) => {
   await t.test('true for document nodes', () => {
     const result = main.isDocument({
       nodeName: '#document',
-      mode: DOCUMENT_MODE.NO_QUIRKS,
+      mode: html.DOCUMENT_MODE.NO_QUIRKS,
       childNodes: []
     });
 
@@ -93,7 +92,7 @@ test('isTemplateNode', async (t) => {
         childNodes: []
       },
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       parentNode: null,
       childNodes: []
     });
@@ -122,7 +121,7 @@ test('isParentNode', async (t) => {
   await t.test('true for document nodes', () => {
     const node: Document = {
       nodeName: '#document',
-      mode: DOCUMENT_MODE.NO_QUIRKS,
+      mode: html.DOCUMENT_MODE.NO_QUIRKS,
       childNodes: []
     };
     assert.strictEqual(main.isParentNode(node), true);
@@ -141,7 +140,7 @@ test('isParentNode', async (t) => {
       nodeName: 'div',
       tagName: 'DIV',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       parentNode: null,
       childNodes: []
     };
@@ -157,7 +156,7 @@ test('isParentNode', async (t) => {
         childNodes: []
       },
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       parentNode: null,
       childNodes: []
     };
@@ -181,7 +180,7 @@ test('isChildNode', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: []
     };
     assert.strictEqual(main.isChildNode(node), true);
@@ -193,7 +192,7 @@ test('isChildNode', async (t) => {
       parentNode: null,
       tagName: 'template',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: [],
       content: {
         nodeName: '#document-fragment',
@@ -235,7 +234,7 @@ test('isChildNode', async (t) => {
   await t.test('false for document nodes', () => {
     const node: Document = {
       nodeName: '#document',
-      mode: DOCUMENT_MODE.NO_QUIRKS,
+      mode: html.DOCUMENT_MODE.NO_QUIRKS,
       childNodes: []
     };
     assert.strictEqual(main.isChildNode(node), false);
@@ -469,7 +468,7 @@ test('setAttribute', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: []
     };
 
@@ -486,7 +485,7 @@ test('getAttribute', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [{name: 'some-attr', value: 'some-value'}],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: []
     };
 
@@ -501,7 +500,7 @@ test('getAttribute', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: []
     };
 
@@ -516,7 +515,7 @@ test('getAttribute', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [{name: 'some-attr', value: ''}],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: []
     };
 
@@ -533,7 +532,7 @@ test('hasAttribute', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [{name: 'some-attr', value: 'some-value'}],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: []
     };
 
@@ -548,7 +547,7 @@ test('hasAttribute', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: []
     };
 
@@ -565,7 +564,7 @@ test('removeAttribute', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [{name: 'some-attr', value: 'some-value'}],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: []
     };
 
@@ -580,7 +579,7 @@ test('removeAttribute', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: []
     };
 
@@ -600,7 +599,7 @@ test('getAttributeIndex', async (t) => {
         {name: 'attr-0', value: 'some-value'},
         {name: 'attr-1', value: 'some-value'}
       ],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: []
     };
 
@@ -617,7 +616,7 @@ test('getAttributeIndex', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: []
     };
 
@@ -696,7 +695,7 @@ test('getTextContent', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: []
     };
     const node: DocumentFragment = {
@@ -730,7 +729,7 @@ test('getTextContent', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: [level2Child0]
     };
     const level0Child1: Element = {
@@ -738,7 +737,7 @@ test('getTextContent', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: [level1Child0, level1Child1]
     };
     const node: DocumentFragment = {
@@ -826,14 +825,14 @@ test('query', async (t) => {
     assert.strictEqual(result, child1);
   });
 
-  await t.test('returns root if it matches', () => {
+  await t.test('does not return root if it matches', () => {
     const node: DocumentFragment = {
       nodeName: '#document-fragment',
       childNodes: []
     };
     const result = main.query(node, () => true);
 
-    assert.strictEqual(result, node);
+    assert.strictEqual(result, null);
   });
 
   await t.test('null when no match', () => {
@@ -863,7 +862,7 @@ test('query', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: [subChild]
     };
     const node: DocumentFragment = {
@@ -875,7 +874,7 @@ test('query', async (t) => {
     assert.strictEqual(result, subChild);
   });
 
-  await t.test('returns self if matches and not parent node', () => {
+  await t.test('returns null if root is not parent node', () => {
     const node: TextNode = {
       nodeName: '#text',
       parentNode: null,
@@ -883,7 +882,7 @@ test('query', async (t) => {
     };
     const result = main.query(node, () => true);
 
-    assert.strictEqual(result, node);
+    assert.strictEqual(result, null);
   });
 });
 
@@ -921,7 +920,7 @@ test('queryAll', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: [subChild0, subChild1]
     };
     const node: DocumentFragment = {
@@ -935,7 +934,7 @@ test('queryAll', async (t) => {
     assert.strictEqual(result[1], subChild1);
   });
 
-  await t.test('returns root if it matches', () => {
+  await t.test('does not match root', () => {
     const node: DocumentFragment = {
       nodeName: '#document-fragment',
       childNodes: []
@@ -943,11 +942,10 @@ test('queryAll', async (t) => {
 
     const result = [...main.queryAll(node, () => true)];
 
-    assert.strictEqual(result.length, 1);
-    assert.strictEqual(result[0], node);
+    assert.strictEqual(result.length, 0);
   });
 
-  await t.test('returns root if it matches and isnt parent-like', () => {
+  await t.test('returns empty if root isnt parent-like', () => {
     const node: TextNode = {
       nodeName: '#text',
       parentNode: null,
@@ -956,8 +954,7 @@ test('queryAll', async (t) => {
 
     const result = [...main.queryAll(node, () => true)];
 
-    assert.strictEqual(result.length, 1);
-    assert.strictEqual(result[0], node);
+    assert.strictEqual(result.length, 0);
   });
 
   await t.test('returns all nodes if no condition', () => {
@@ -976,7 +973,7 @@ test('queryAll', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: [subChild0, subChild1]
     };
     const node: DocumentFragment = {
@@ -985,16 +982,15 @@ test('queryAll', async (t) => {
     };
     const result = [...main.queryAll(node)];
 
-    assert.strictEqual(result.length, 4);
-    assert.strictEqual(result[0], node);
-    assert.strictEqual(result[1], child);
-    assert.strictEqual(result[2], subChild0);
-    assert.strictEqual(result[3], subChild1);
+    assert.strictEqual(result.length, 3);
+    assert.strictEqual(result[0], child);
+    assert.strictEqual(result[1], subChild0);
+    assert.strictEqual(result[2], subChild1);
   });
 });
 
 test('walkChildren', async (t) => {
-  await t.test('yields root when no children', () => {
+  await t.test('yields nothing when no children', () => {
     const node: TextNode = {
       nodeName: '#text',
       parentNode: null,
@@ -1002,8 +998,7 @@ test('walkChildren', async (t) => {
     };
     const result = [...main.walkChildren(node)];
 
-    assert.strictEqual(result.length, 1);
-    assert.strictEqual(result[0], node);
+    assert.strictEqual(result.length, 0);
   });
 
   await t.test('yields direct children', () => {
@@ -1023,10 +1018,9 @@ test('walkChildren', async (t) => {
     };
     const result = [...main.walkChildren(node)];
 
-    assert.strictEqual(result.length, 3);
-    assert.strictEqual(result[0], node);
-    assert.strictEqual(result[1], child0);
-    assert.strictEqual(result[2], child1);
+    assert.strictEqual(result.length, 2);
+    assert.strictEqual(result[0], child0);
+    assert.strictEqual(result[1], child1);
   });
 
   await t.test('yields deep children', () => {
@@ -1045,7 +1039,7 @@ test('walkChildren', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: [subChild0, subChild1]
     };
     const node: DocumentFragment = {
@@ -1054,11 +1048,10 @@ test('walkChildren', async (t) => {
     };
     const result = [...main.walkChildren(node)];
 
-    assert.strictEqual(result.length, 4);
-    assert.strictEqual(result[0], node);
-    assert.strictEqual(result[1], child);
-    assert.strictEqual(result[2], subChild0);
-    assert.strictEqual(result[3], subChild1);
+    assert.strictEqual(result.length, 3);
+    assert.strictEqual(result[0], child);
+    assert.strictEqual(result[1], subChild0);
+    assert.strictEqual(result[2], subChild1);
   });
 });
 
@@ -1074,7 +1067,7 @@ test('ancestors', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: [subSubChild]
     };
     const child: Element = {
@@ -1082,7 +1075,7 @@ test('ancestors', async (t) => {
       parentNode: null,
       tagName: 'div',
       attrs: [],
-      namespaceURI: NS.HTML,
+      namespaceURI: html.NS.HTML,
       childNodes: [subChild]
     };
     const node: DocumentFragment = {
@@ -1121,7 +1114,7 @@ test('previousSiblings', async (t) => {
   await t.test('empty set for non-child-like nodes', () => {
     const node: Document = {
       nodeName: '#document',
-      mode: DOCUMENT_MODE.NO_QUIRKS,
+      mode: html.DOCUMENT_MODE.NO_QUIRKS,
       childNodes: []
     };
 
@@ -1178,7 +1171,7 @@ test('nextSiblings', async (t) => {
   await t.test('empty set for non-child-like nodes', () => {
     const node: Document = {
       nodeName: '#document',
-      mode: DOCUMENT_MODE.NO_QUIRKS,
+      mode: html.DOCUMENT_MODE.NO_QUIRKS,
       childNodes: []
     };
 

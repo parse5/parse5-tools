@@ -269,10 +269,9 @@ export function query(
  * @param {Node} node Node to traverse from
  */
 export function* walkChildren(node: Node): IterableIterator<Node> {
-  yield node;
-
   if (isParentNode(node)) {
     for (const child of node.childNodes) {
+      yield child;
       yield* walkChildren(child);
     }
   }
