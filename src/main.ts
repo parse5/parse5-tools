@@ -1,6 +1,5 @@
-import {
-  defaultTreeAdapter,
-  NodeType,
+import {defaultTreeAdapter} from 'parse5';
+import type {
   Element,
   ParentNode,
   CommentNode,
@@ -18,7 +17,7 @@ import {
  * @param {Node} node Node to test
  * @return {boolean}
  */
-function isDocument(node: Node): node is Document {
+export function isDocument(node: Node): node is Document {
   return node.nodeName === '#document';
 }
 
@@ -27,7 +26,7 @@ function isDocument(node: Node): node is Document {
  * @param {Node} node Node to test
  * @return {boolean}
  */
-function isDocumentFragment(node: Node): node is DocumentFragment {
+export function isDocumentFragment(node: Node): node is DocumentFragment {
   return node.nodeName === '#document-fragment';
 }
 
@@ -36,9 +35,19 @@ function isDocumentFragment(node: Node): node is DocumentFragment {
  * @param {Node} node Node to test
  * @return {boolean}
  */
-function isTemplateNode(node: Node): node is Template {
+export function isTemplateNode(node: Node): node is Template {
   return node.nodeName === 'template';
 }
+
+export const isElementNode = defaultTreeAdapter.isElementNode;
+
+export const isCommentNode = defaultTreeAdapter.isCommentNode;
+
+export const isDocumentTypeNode = defaultTreeAdapter.isDocumentTypeNode;
+
+export const isTextNode = defaultTreeAdapter.isTextNode;
+
+export const appendChild = defaultTreeAdapter.appendChild;
 
 /**
  * Determines if a given node is a parent or not
@@ -49,7 +58,7 @@ export function isParentNode(node: Node): node is ParentNode {
   return (
     isDocument(node) ||
     isDocumentFragment(node) ||
-    defaultTreeAdapter.isElementNode(node) ||
+    isElementNode(node) ||
     isTemplateNode(node)
   );
 }
@@ -61,11 +70,11 @@ export function isParentNode(node: Node): node is ParentNode {
  */
 export function isChildNode(node: Node): node is ChildNode {
   return (
-    defaultTreeAdapter.isElementNode(node) ||
+    isElementNode(node) ||
     isTemplateNode(node) ||
-    defaultTreeAdapter.isCommentNode(node) ||
-    defaultTreeAdapter.isTextNode(node) ||
-    defaultTreeAdapter.isDocumentTypeNode(node)
+    isCommentNode(node) ||
+    isTextNode(node) ||
+    isDocumentTypeNode(node)
   );
 }
 
@@ -101,12 +110,23 @@ export function replaceWith(
   ...replacements: ChildNode[]
 ): void {
   if (node.parentNode) {
-    spliceChildren(
-      node.parentNode,
-      node.parentNode.childNodes.indexOf(node),
-      1,
-      ...replacements
-    );
+    const parentNode = node.parentNode;
+    const index = parentNode.childNodes.indexOf(node);
+
+    if (index > -1) {
+      spliceChildren(
+        parentNode,
+        parentNode.childNodes.indexOf(node),
+        1,
+        ...replacements
+      );
+
+      for (const replacement of replacements) {
+        replacement.parentNode = parentNode;
+      }
+    }
+
+    node.parentNode = null;
   }
 }
 
@@ -175,11 +195,11 @@ export function getAttributeIndex(node: Element, name: string): number {
  * @return {string}
  */
 export function getTextContent(node: Node): string {
-  if (defaultTreeAdapter.isCommentNode(node)) {
+  if (isCommentNode(node)) {
     return node.data;
   }
 
-  if (defaultTreeAdapter.isTextNode(node)) {
+  if (isTextNode(node)) {
     return node.value;
   }
 
@@ -187,9 +207,7 @@ export function getTextContent(node: Node): string {
 
   const children = queryAll(
     node,
-    (node) =>
-      defaultTreeAdapter.isTextNode(node) ||
-      defaultTreeAdapter.isCommentNode(node)
+    (node) => isTextNode(node) || isCommentNode(node)
   );
 
   for (const child of children) {
@@ -204,9 +222,9 @@ export function getTextContent(node: Node): string {
  * @param {string} value Text contents of the new node
  * @return {TextNode}
  */
-function createTextNode(value: string): TextNode {
+export function createTextNode(value: string): TextNode {
   return {
-    nodeName: NodeType.Text,
+    nodeName: '#text',
     value,
     parentNode: null
   };
@@ -219,13 +237,13 @@ function createTextNode(value: string): TextNode {
  * @return {void}
  */
 export function setTextContent(node: Node, text: string): void {
-  if (defaultTreeAdapter.isCommentNode(node)) {
+  if (isCommentNode(node)) {
     node.data = text;
-  } else if (defaultTreeAdapter.isTextNode(node)) {
+  } else if (isTextNode(node)) {
     node.value = text;
   } else if (isParentNode(node)) {
     const textNode = createTextNode(text);
-    defaultTreeAdapter.appendChild(node, textNode);
+    appendChild(node, textNode);
   }
 }
 
@@ -251,10 +269,9 @@ export function query(
  * @param {Node} node Node to traverse from
  */
 export function* walkChildren(node: Node): IterableIterator<Node> {
-  yield node;
-
   if (isParentNode(node)) {
     for (const child of node.childNodes) {
+      yield child;
       yield* walkChildren(child);
     }
   }
@@ -288,6 +305,8 @@ export function* ancestors(node: Node): IterableIterator<Node> {
 
     if (isChildNode(current)) {
       current = current.parentNode;
+    } else {
+      current = null;
     }
   }
 }
@@ -375,10 +394,7 @@ export function traverse(
     visitor.documentFragment(node, parent);
   }
 
-  if (
-    typeof visitor.element === 'function' &&
-    defaultTreeAdapter.isElementNode(node)
-  ) {
+  if (typeof visitor.element === 'function' && isElementNode(node)) {
     visitor.element(node, parent);
   }
 
@@ -386,24 +402,15 @@ export function traverse(
     visitor.template(node, parent);
   }
 
-  if (
-    typeof visitor.comment === 'function' &&
-    defaultTreeAdapter.isCommentNode(node)
-  ) {
+  if (typeof visitor.comment === 'function' && isCommentNode(node)) {
     visitor.comment(node, parent);
   }
 
-  if (
-    typeof visitor.text === 'function' &&
-    defaultTreeAdapter.isTextNode(node)
-  ) {
+  if (typeof visitor.text === 'function' && isTextNode(node)) {
     visitor.text(node, parent);
   }
 
-  if (
-    typeof visitor.documentType === 'function' &&
-    defaultTreeAdapter.isDocumentTypeNode(node)
-  ) {
+  if (typeof visitor.documentType === 'function' && isDocumentTypeNode(node)) {
     visitor.documentType(node, parent);
   }
 }
