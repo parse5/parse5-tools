@@ -1,5 +1,5 @@
 {
-  "name": "parse5-tools",
+  "name": "@parse5/tools",
   "version": "0.0.1",
   "description": "A small set of utilities for dealing with parse5 syntax trees",
   "main": "lib/main.js",
