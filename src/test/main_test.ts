@@ -1460,3 +1460,45 @@ test('traverse', async (t) => {
     assert.strictEqual(callCount, 2);
   });
 });
+
+test('createElement', async (t) => {
+  await t.test('creates an element', () => {
+    const node = main.createElement('div');
+
+    assert.strictEqual(node.nodeName, 'div');
+    assert.strictEqual(node.attrs.length, 0);
+    assert.strictEqual(node.namespaceURI, html.NS.HTML);
+  });
+
+  await t.test('creates an element with specified attrs', () => {
+    const node = main.createElement('div', html.NS.HTML, [
+      {name: 'foo', value: 'piwo'},
+      {name: 'bar', value: 'mleko'}
+    ]);
+
+    assert.strictEqual(node.attrs.length, 2);
+    assert.deepStrictEqual(node.attrs, [
+      {name: 'foo', value: 'piwo'},
+      {name: 'bar', value: 'mleko'}
+    ]);
+  });
+
+  await t.test('creates an element with specified attrs as object', () => {
+    const node = main.createElement('div', html.NS.HTML, {
+      foo: 'piwo',
+      bar: 'mleko'
+    });
+
+    assert.strictEqual(node.attrs.length, 2);
+    assert.deepStrictEqual(node.attrs, [
+      {name: 'foo', value: 'piwo'},
+      {name: 'bar', value: 'mleko'}
+    ]);
+  });
+
+  await t.test('creates an element with specified namespace', () => {
+    const node = main.createElement('div', html.NS.XML);
+
+    assert.strictEqual(node.namespaceURI, html.NS.XML);
+  });
+});

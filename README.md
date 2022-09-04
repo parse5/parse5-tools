@@ -15,6 +15,17 @@ Due to this, the types in various places are also simplified and improved.
 
 ## Tools
 
+### Node creation
+
+The default parse5 adapter is usually enough to create the nodes you need.
+
+To make some use cases a little easier, the following do exist, though:
+
+* `createElement(tagName[, namespaceURI[, attrs]])`
+  * The attributes can be an array (e.g. `[{name: 'foo', value: 'bar'}]`) or
+an object (e.g. `{foo: 'bar'}`)
+* `createTextNode(value)`
+
 ### Node type guards
 
 A full set of node type guard functions are availabile:

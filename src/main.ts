@@ -1,4 +1,4 @@
-import {defaultTreeAdapter} from 'parse5';
+import {defaultTreeAdapter, html, Token} from 'parse5';
 import type {
   Element,
   ParentNode,
@@ -228,6 +228,42 @@ export function createTextNode(value: string): TextNode {
     value,
     parentNode: null
   };
+}
+
+/**
+ * Creates an element node
+ * @param {string} tagName Name of the tag to create
+ * @param {NS} namespaceURI Namespace of the element
+ * @param {Record<string, string>|Attribute[]} attrs Attributes for the element
+ * @return {Element}
+ */
+export function createElement(
+  tagName: string,
+  namespaceURI: html.NS = html.NS.HTML,
+  attrs: Record<string, string> | Token.Attribute[] = []
+): Element {
+  const normalisedAttrs: Token.Attribute[] = [];
+
+  if (Array.isArray(attrs)) {
+    for (const attr of attrs) {
+      normalisedAttrs.push(attr);
+    }
+  } else {
+    for (const name in attrs) {
+      if (Object.prototype.hasOwnProperty.call(attrs, name)) {
+        normalisedAttrs.push({
+          name,
+          value: attrs[name]
+        });
+      }
+    }
+  }
+
+  return defaultTreeAdapter.createElement(
+    tagName,
+    namespaceURI,
+    normalisedAttrs
+  );
 }
 
 /**
