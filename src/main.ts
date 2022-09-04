@@ -242,14 +242,14 @@ const namespaceMap: Record<string, html.NS> = {
 /**
  * Creates an element node
  * @param {string} tagName Name of the tag to create
- * @param {NS} namespaceURI Namespace of the element
  * @param {Record<string, string>|Attribute[]} attrs Attributes for the element
+ * @param {NS} namespaceURI Namespace of the element
  * @return {Element}
  */
 export function createElement(
   tagName: string,
-  namespaceURI: html.NS | string = html.NS.HTML,
-  attrs: Record<string, string> | Token.Attribute[] = []
+  attrs: Record<string, string> | Token.Attribute[] = [],
+  namespaceURI: html.NS | string = html.NS.HTML
 ): Element {
   const normalisedAttrs: Token.Attribute[] = [];
 

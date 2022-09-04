@@ -21,7 +21,7 @@ The default parse5 adapter is usually enough to create the nodes you need.
 
 To make some use cases a little easier, the following do exist, though:
 
-* `createElement(tagName[, namespaceURI[, attrs]])`
+* `createElement(tagName[, attrs[, namespaceURI]])`
   * The attributes can be an array (e.g. `[{name: 'foo', value: 'bar'}]`) or
 an object (e.g. `{foo: 'bar'}`)
 * `createTextNode(value)`
