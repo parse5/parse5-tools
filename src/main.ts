@@ -230,6 +230,15 @@ export function createTextNode(value: string): TextNode {
   };
 }
 
+const namespaceMap: Record<string, html.NS> = {
+  HTML: html.NS.HTML,
+  XML: html.NS.XML,
+  MATHML: html.NS.MATHML,
+  SVG: html.NS.SVG,
+  XLINK: html.NS.XLINK,
+  XMLNS: html.NS.XMLNS
+};
+
 /**
  * Creates an element node
  * @param {string} tagName Name of the tag to create
@@ -239,10 +248,14 @@ export function createTextNode(value: string): TextNode {
  */
 export function createElement(
   tagName: string,
-  namespaceURI: html.NS = html.NS.HTML,
+  namespaceURI: html.NS | string = html.NS.HTML,
   attrs: Record<string, string> | Token.Attribute[] = []
 ): Element {
   const normalisedAttrs: Token.Attribute[] = [];
+  const normalisedNamespace =
+    typeof namespaceURI === 'string'
+      ? namespaceMap[namespaceURI.toUpperCase()]
+      : namespaceURI;
 
   if (Array.isArray(attrs)) {
     for (const attr of attrs) {
@@ -261,7 +274,7 @@ export function createElement(
 
   return defaultTreeAdapter.createElement(
     tagName,
-    namespaceURI,
+    normalisedNamespace,
     normalisedAttrs
   );
 }

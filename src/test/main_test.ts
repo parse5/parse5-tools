@@ -1501,4 +1501,10 @@ test('createElement', async (t) => {
 
     assert.strictEqual(node.namespaceURI, html.NS.XML);
   });
+
+  await t.test('creates an element using namespace shortcut', () => {
+    const node = main.createElement('div', 'xml');
+
+    assert.strictEqual(node.namespaceURI, html.NS.XML);
+  });
 });
