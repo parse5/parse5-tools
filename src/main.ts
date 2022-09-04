@@ -252,10 +252,9 @@ export function createElement(
   attrs: Record<string, string> | Token.Attribute[] = []
 ): Element {
   const normalisedAttrs: Token.Attribute[] = [];
+
   const normalisedNamespace =
-    typeof namespaceURI === 'string'
-      ? namespaceMap[namespaceURI.toUpperCase()]
-      : namespaceURI;
+    namespaceMap[namespaceURI.toUpperCase()] ?? namespaceURI;
 
   if (Array.isArray(attrs)) {
     for (const attr of attrs) {
