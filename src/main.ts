@@ -13,6 +13,19 @@ import type {
 } from 'parse5/dist/tree-adapters/default.js';
 
 /**
+ * Attempts to remove the given node from the AST
+ * @param {Node} node Node to remove
+ * @return {void}
+ */
+export function removeNode(node: Node): void {
+  if (!isChildNode(node)) {
+    // Must already be detached, or someone made an absurd AST
+    return;
+  }
+  defaultTreeAdapter.detachNode(node);
+}
+
+/**
  * Determines if a given node is a document or not
  * @param {Node} node Node to test
  * @return {boolean}
