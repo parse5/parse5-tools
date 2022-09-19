@@ -26,6 +26,13 @@ To make some use cases a little easier, the following do exist, though:
 an object (e.g. `{foo: 'bar'}`)
 * `createTextNode(value)`
 
+### Node removal
+
+The default parse5 adapter can already remove nodes. For ease of use, we also
+expose a function here:
+
+* `removeNode(node)`
+
 ### Node type guards
 
 A full set of node type guard functions are availabile:
