@@ -301,11 +301,11 @@ export function setTextContent(node: Node, text: string): void {
  * @param {Function} condition Function to determine if the node matches or not
  * @return {Node|null}
  */
-export function query(
+export function query<T extends Node = Node>(
   root: Node,
   condition: (node: Node) => boolean
-): Node | null {
-  for (const child of queryAll(root, condition)) {
+): T | null {
+  for (const child of queryAll<T>(root, condition)) {
     return child;
   }
 
@@ -330,13 +330,16 @@ export function* walkChildren(node: Node): IterableIterator<Node> {
  * @param {Node} root Root node to traverse from
  * @param {Function} condition Function to determine if a node matches or not
  */
-export function* queryAll(
+export function* queryAll<T extends Node = Node>(
   root: Node,
   condition?: (node: Node) => boolean
-): IterableIterator<Node> {
+): IterableIterator<T> {
   for (const child of walkChildren(root)) {
     if (!condition || condition(child)) {
-      yield child;
+      // This cast is here to make `querySelector<Element>` and such possible.
+      // If there's no condition, the node really should be `Node` but
+      // sometimes humans might know what they're doing.
+      yield child as T;
     }
   }
 }
