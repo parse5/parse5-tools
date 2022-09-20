@@ -25,6 +25,11 @@ To make some use cases a little easier, the following do exist, though:
   * The attributes can be an array (e.g. `[{name: 'foo', value: 'bar'}]`) or
 an object (e.g. `{foo: 'bar'}`)
 * `createTextNode(value)`
+* `createCommentNode(value)`
+* `createDocument()`
+* `createDocumentFragment()`
+* `createTemplateNode([content])`
+  * The `content` must be a `DocumentFragment` if it is set
 
 ### Node removal
 
