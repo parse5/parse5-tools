@@ -2,11 +2,7 @@ import {strict as assert} from 'node:assert';
 import test from 'node:test';
 import * as main from '../main.js';
 import {defaultTreeAdapter, html} from 'parse5';
-import type {
-  Document,
-  TextNode,
-  DocumentFragment
-} from 'parse5/dist/tree-adapters/default.js';
+import type {Document, TextNode, DocumentFragment} from '../nodeTypes.js';
 
 test('removeNode', async (t) => {
   await t.test('does nothing if not a child', () => {

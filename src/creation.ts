@@ -6,7 +6,7 @@ import type {
   Template,
   DocumentFragment,
   Document
-} from 'parse5/dist/tree-adapters/default.js';
+} from './nodeTypes.js';
 
 const namespaceMap: Record<string, html.NS> = {
   HTML: html.NS.HTML,

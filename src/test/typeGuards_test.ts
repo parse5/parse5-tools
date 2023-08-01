@@ -10,7 +10,7 @@ import type {
   Template,
   DocumentType,
   DocumentFragment
-} from 'parse5/dist/tree-adapters/default.js';
+} from '../nodeTypes.js';
 
 test('isElementNode', async (t) => {
   await t.test('delegates to default adapter', () => {

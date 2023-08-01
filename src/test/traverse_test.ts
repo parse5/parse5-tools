@@ -2,11 +2,7 @@ import {strict as assert} from 'node:assert';
 import test from 'node:test';
 import * as main from '../main.js';
 import {html} from 'parse5';
-import type {
-  Node,
-  TextNode,
-  DocumentFragment
-} from 'parse5/dist/tree-adapters/default.js';
+import type {Node, TextNode, DocumentFragment} from '../nodeTypes.js';
 
 test('traverse', async (t) => {
   await t.test('calls node callback when encountered', () => {

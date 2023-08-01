@@ -8,7 +8,7 @@ import type {
   TextNode,
   DocumentType,
   DocumentFragment
-} from 'parse5/dist/tree-adapters/default.js';
+} from '../nodeTypes.js';
 
 test('getTextContent', async (t) => {
   await t.test('returns data of comment', () => {

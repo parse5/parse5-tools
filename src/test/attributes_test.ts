@@ -2,7 +2,7 @@ import {strict as assert} from 'node:assert';
 import test from 'node:test';
 import * as main from '../main.js';
 import {html} from 'parse5';
-import type {Element} from 'parse5/dist/tree-adapters/default.js';
+import type {Element} from '../nodeTypes.js';
 
 test('setAttribute', async (t) => {
   await t.test('adds attribute to elemet attrs', () => {
