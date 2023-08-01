@@ -7,7 +7,7 @@ import type {
   Element,
   TextNode,
   DocumentFragment
-} from 'parse5/dist/tree-adapters/default.js';
+} from '../nodeTypes.js';
 
 test('query', async (t) => {
   await t.test('retrieves first matching child', () => {

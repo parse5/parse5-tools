@@ -1,4 +1,4 @@
-import type {Element} from 'parse5/dist/tree-adapters/default.js';
+import type {Element} from './nodeTypes.js';
 
 /**
  * Sets the given attribute on the specified node

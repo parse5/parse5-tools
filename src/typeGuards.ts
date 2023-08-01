@@ -1,4 +1,5 @@
 import {defaultTreeAdapter} from 'parse5';
+import type {DefaultTreeAdapterMap, TreeAdapter} from 'parse5';
 import type {
   ParentNode,
   ChildNode,
@@ -6,7 +7,9 @@ import type {
   DocumentFragment,
   Document,
   Node
-} from 'parse5/dist/tree-adapters/default.js';
+} from './nodeTypes.js';
+
+type DefaultTreeAdapterLike = TreeAdapter<DefaultTreeAdapterMap>;
 
 /**
  * Determines if a given node is a document or not
@@ -35,13 +38,17 @@ export function isTemplateNode(node: Node): node is Template {
   return node.nodeName === 'template';
 }
 
-export const isElementNode = defaultTreeAdapter.isElementNode;
+export const isElementNode: DefaultTreeAdapterLike['isElementNode'] =
+  defaultTreeAdapter.isElementNode;
 
-export const isCommentNode = defaultTreeAdapter.isCommentNode;
+export const isCommentNode: DefaultTreeAdapterLike['isCommentNode'] =
+  defaultTreeAdapter.isCommentNode;
 
-export const isDocumentTypeNode = defaultTreeAdapter.isDocumentTypeNode;
+export const isDocumentTypeNode: DefaultTreeAdapterLike['isDocumentTypeNode'] =
+  defaultTreeAdapter.isDocumentTypeNode;
 
-export const isTextNode = defaultTreeAdapter.isTextNode;
+export const isTextNode: DefaultTreeAdapterLike['isTextNode'] =
+  defaultTreeAdapter.isTextNode;
 
 /**
  * Determines if a given node is a parent or not

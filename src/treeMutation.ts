@@ -1,6 +1,9 @@
 import {defaultTreeAdapter} from 'parse5';
+import type {DefaultTreeAdapterMap, TreeAdapter} from 'parse5';
 import {isChildNode, isParentNode} from './typeGuards.js';
-import type {ChildNode, Node} from 'parse5/dist/tree-adapters/default.js';
+import type {ChildNode, Node} from './nodeTypes.js';
+
+type DefaultTreeAdapterLike = TreeAdapter<DefaultTreeAdapterMap>;
 
 /**
  * Attempts to remove the given node from the AST
@@ -15,7 +18,8 @@ export function removeNode(node: Node): void {
   defaultTreeAdapter.detachNode(node);
 }
 
-export const appendChild = defaultTreeAdapter.appendChild;
+export const appendChild: DefaultTreeAdapterLike['appendChild'] =
+  defaultTreeAdapter.appendChild;
 
 /**
  * Performs a splice on the children of the given node

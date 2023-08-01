@@ -1,4 +1,4 @@
-import type {Node} from 'parse5/dist/tree-adapters/default.js';
+import type {Node} from './nodeTypes.js';
 import {isCommentNode, isTextNode, isParentNode} from './typeGuards.js';
 import {appendChild} from './treeMutation.js';
 import {createTextNode} from './creation.js';

@@ -1,4 +1,4 @@
-import type {Node} from 'parse5/dist/tree-adapters/default.js';
+import type {Node} from './nodeTypes.js';
 import {isParentNode, isChildNode} from './typeGuards.js';
 
 /**

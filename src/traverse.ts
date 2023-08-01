@@ -8,7 +8,7 @@ import type {
   Document,
   DocumentType,
   Node
-} from 'parse5/dist/tree-adapters/default.js';
+} from './nodeTypes.js';
 import {
   isParentNode,
   isDocument,
