@@ -164,6 +164,28 @@ test('setTextContent', async (t) => {
     });
   });
 
+  await t.test('sets text node for parent nodes', () => {
+    const node: DocumentFragment = {
+      nodeName: '#document-fragment',
+      childNodes: []
+    };
+
+    node.childNodes.push({
+      nodeName: '#text',
+      value: 'old text',
+      parentNode: node
+    });
+
+    main.setTextContent(node, 'new text');
+
+    assert.strictEqual(node.childNodes.length, 1);
+    assert.deepStrictEqual(node.childNodes[0], {
+      nodeName: '#text',
+      value: 'new text',
+      parentNode: node
+    });
+  });
+
   await t.test('ignores document type nodes', () => {
     const node: DocumentType = {
       nodeName: '#documentType',
