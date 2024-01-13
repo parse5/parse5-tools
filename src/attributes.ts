@@ -8,6 +8,8 @@ import type {Element} from './nodeTypes.js';
  * @return {void}
  */
 export function setAttribute(node: Element, name: string, value: string): void {
+  removeAttribute(node, name);
+
   node.attrs.push({
     name,
     value
