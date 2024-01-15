@@ -19,6 +19,22 @@ test('setAttribute', async (t) => {
 
     assert.deepStrictEqual(node.attrs, [{name: 'ping-pong', value: 'boing'}]);
   });
+
+  await t.test('modifies existing attribute on element', () => {
+    const node: Element = {
+      nodeName: 'div',
+      parentNode: null,
+      tagName: 'div',
+      attrs: [{name: 'foo', value: 'bar'}],
+      namespaceURI: html.NS.HTML,
+      childNodes: []
+    };
+
+    main.setAttribute(node, 'foo', 'baz');
+
+    assert.strictEqual(node.attrs.length, 1);
+    assert.deepStrictEqual(node.attrs, [{name: 'foo', value: 'baz'}]);
+  });
 });
 
 test('getAttribute', async (t) => {

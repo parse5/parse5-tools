@@ -1,8 +1,8 @@
 import type {Node} from './nodeTypes.js';
 import {isCommentNode, isTextNode, isParentNode} from './typeGuards.js';
-import {appendChild} from './treeMutation.js';
 import {createTextNode} from './creation.js';
 import {queryAll} from './traversal.js';
+import {appendChild} from './treeMutation.js';
 
 /**
  * Computes the text content of a given node using a similar
@@ -21,10 +21,7 @@ export function getTextContent(node: Node): string {
 
   let content = '';
 
-  const children = queryAll(
-    node,
-    (node) => isTextNode(node) || isCommentNode(node)
-  );
+  const children = queryAll(node, (node) => isTextNode(node));
 
   for (const child of children) {
     content += getTextContent(child);
@@ -45,7 +42,7 @@ export function setTextContent(node: Node, text: string): void {
   } else if (isTextNode(node)) {
     node.value = text;
   } else if (isParentNode(node)) {
-    const textNode = createTextNode(text);
-    appendChild(node, textNode);
+    node.childNodes = [];
+    appendChild(node, createTextNode(text));
   }
 }

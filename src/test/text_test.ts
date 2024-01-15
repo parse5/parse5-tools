@@ -35,16 +35,28 @@ test('getTextContent', async (t) => {
     assert.strictEqual(result, 'some text');
   });
 
+  await t.test('returns value of comment node', () => {
+    const node: CommentNode = {
+      nodeName: '#comment',
+      parentNode: null,
+      data: 'some comment'
+    };
+
+    const result = main.getTextContent(node);
+
+    assert.strictEqual(result, 'some comment');
+  });
+
   await t.test('concats all text-like children', () => {
     const child1: TextNode = {
       nodeName: '#text',
       parentNode: null,
-      value: 'text node'
+      value: 'text node 1'
     };
-    const child2: CommentNode = {
-      nodeName: '#comment',
+    const child2: TextNode = {
+      nodeName: '#text',
       parentNode: null,
-      data: 'comment node'
+      value: 'text node 2'
     };
     const node: DocumentFragment = {
       nodeName: '#document-fragment',
@@ -53,7 +65,7 @@ test('getTextContent', async (t) => {
 
     const result = main.getTextContent(node);
 
-    assert.strictEqual(result, 'text nodecomment node');
+    assert.strictEqual(result, 'text node 1text node 2');
   });
 
   await t.test('ignores non-text children', () => {
@@ -160,6 +172,28 @@ test('setTextContent', async (t) => {
     assert.deepStrictEqual(node.childNodes[0], {
       nodeName: '#text',
       value: 'some text',
+      parentNode: node
+    });
+  });
+
+  await t.test('sets text node for parent nodes', () => {
+    const node: DocumentFragment = {
+      nodeName: '#document-fragment',
+      childNodes: []
+    };
+
+    node.childNodes.push({
+      nodeName: '#text',
+      value: 'old text',
+      parentNode: node
+    });
+
+    main.setTextContent(node, 'new text');
+
+    assert.strictEqual(node.childNodes.length, 1);
+    assert.deepStrictEqual(node.childNodes[0], {
+      nodeName: '#text',
+      value: 'new text',
       parentNode: node
     });
   });
