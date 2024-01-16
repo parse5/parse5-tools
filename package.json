@@ -20,14 +20,14 @@
   },
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/43081j/parse5-tools.git"
+    "url": "git+https://github.com/parse5/parse5-tools.git"
   },
   "author": "James Garbutt (https://github.com/43081j)",
   "license": "MIT",
   "bugs": {
-    "url": "https://github.com/43081j/parse5-tools/issues"
+    "url": "https://github.com/parse5/parse5-tools/issues"
   },
-  "homepage": "https://github.com/43081j/parse5-tools#readme",
+  "homepage": "https://github.com/parse5/parse5-tools#readme",
   "devDependencies": {
     "@types/node": "^20.5.8",
     "@typescript-eslint/eslint-plugin": "^6.5.0",
