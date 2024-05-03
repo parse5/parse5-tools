@@ -13,7 +13,7 @@
     "lint": "eslint \"src/**/*.ts\"",
     "prebuild": "npm run clean",
     "build": "tsc",
-    "test": "c8 -r html -r text-summary node --test lib/test",
+    "test": "c8 -r html -r text-summary node --test",
     "format": "prettier --write \"src/**/*.ts\"",
     "prepare": "npm run build",
     "prepublishOnly": "npm run lint && npm run test"
@@ -29,14 +29,15 @@
   },
   "homepage": "https://github.com/parse5/parse5-tools#readme",
   "devDependencies": {
+    "@eslint/js": "^9.1.1",
     "@types/node": "^20.5.8",
-    "@typescript-eslint/eslint-plugin": "^6.5.0",
-    "c8": "^8.0.1",
+    "c8": "^9.1.0",
     "eslint": "^8.48.0",
     "eslint-config-google": "^0.14.0",
     "prettier": "^3.0.3",
     "rimraf": "^5.0.1",
-    "typescript": "^5.2.2"
+    "typescript": "^5.2.2",
+    "typescript-eslint": "^7.8.0"
   },
   "dependencies": {
     "parse5": "^7.0.0"
