@@ -12,8 +12,8 @@
     "clean": "rimraf ./lib",
     "lint": "eslint \"src/**/*.ts\"",
     "prebuild": "npm run clean",
-    "build": "tsc",
-    "test": "c8 -r html -r text-summary node --test",
+    "build": "wireit",
+    "test": "wireit",
     "format": "prettier --write \"src/**/*.ts\"",
     "prepare": "npm run build",
     "prepublishOnly": "npm run lint && npm run test"
@@ -37,9 +37,85 @@
     "prettier": "^3.0.3",
     "rimraf": "^5.0.1",
     "typescript": "^5.2.2",
-    "typescript-eslint": "^7.8.0"
+    "typescript-eslint": "^7.8.0",
+    "wireit": "^0.14.9"
   },
   "dependencies": {
     "parse5": "^7.0.0"
+  },
+  "exports": {
+    ".": {
+      "import": "./lib/main.js",
+      "require": "./commonjs/main.js"
+    },
+    "attributes.js": {
+      "import": "./lib/attributes.js",
+      "require": "./commonjs/attributes.js"
+    },
+    "creation.js": {
+      "import": "./lib/attributes.js",
+      "require": "./commonjs/attributes.js"
+    },
+    "nodeTypes.js": {
+      "import": "./lib/attributes.js",
+      "require": "./commonjs/attributes.js"
+    },
+    "text.js": {
+      "import": "./lib/attributes.js",
+      "require": "./commonjs/attributes.js"
+    },
+    "traversal.js": {
+      "import": "./lib/attributes.js",
+      "require": "./commonjs/attributes.js"
+    },
+    "traverse.js": {
+      "import": "./lib/attributes.js",
+      "require": "./commonjs/attributes.js"
+    },
+    "treeMutation.js": {
+      "import": "./lib/attributes.js",
+      "require": "./commonjs/attributes.js"
+    },
+    "typeGuards.js": {
+      "import": "./lib/attributes.js",
+      "require": "./commonjs/attributes.js"
+    }
+  },
+  "wireit": {
+    "build": {
+      "dependencies": [
+        "build:ts",
+        "build:commonjs"
+      ]
+    },
+    "build:ts": {
+      "command": "tsc --pretty",
+      "files": [
+        "src/**/*.ts",
+        "tsconfig.json"
+      ],
+      "output": [
+        "lib"
+      ]
+    },
+    "build:commonjs": {
+      "command": "tsc --pretty --project tsconfig.commonjs.json",
+      "files": [
+        "src/**/*.ts",
+        "tsconfig.commonjs.json"
+      ],
+      "output": [
+        "commonjs",
+        "!commonjs/package.json"
+      ]
+    },
+    "test": {
+      "command": "c8 -r html -r text-summary node --test",
+      "dependencies": [
+        "build:ts"
+      ],
+      "files": [],
+      "output": []
+    }
   }
 }

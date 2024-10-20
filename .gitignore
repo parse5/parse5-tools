@@ -1,5 +1,8 @@
 node_modules/
 lib/
+/commonjs/*
+!/commonjs/package.json
+/.wireit/
 *.swp
 .nyc_output/
 coverage/
