@@ -9,7 +9,7 @@
   ],
   "type": "module",
   "scripts": {
-    "clean": "rimraf ./lib",
+    "clean": "premove ./lib",
     "lint": "eslint \"src/**/*.ts\"",
     "prebuild": "npm run clean",
     "build": "tsc",
@@ -29,15 +29,14 @@
   },
   "homepage": "https://github.com/parse5/parse5-tools#readme",
   "devDependencies": {
-    "@eslint/js": "^9.1.1",
+    "@eslint/js": "^9.39.1",
     "@types/node": "^20.5.8",
     "c8": "^9.1.0",
-    "eslint": "^8.48.0",
-    "eslint-config-google": "^0.14.0",
+    "eslint": "^9.39.1",
+    "premove": "^4.0.0",
     "prettier": "^3.0.3",
-    "rimraf": "^5.0.1",
     "typescript": "^5.2.2",
-    "typescript-eslint": "^7.8.0"
+    "typescript-eslint": "^8.47.0"
   },
   "peerDependencies": {
     "parse5": "7.x || 8.x"
