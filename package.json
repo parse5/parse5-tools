@@ -13,7 +13,7 @@
     "lint": "eslint \"src/**/*.ts\"",
     "prebuild": "npm run clean",
     "build": "tsc",
-    "test": "c8 -r html -r text-summary node --test",
+    "test": "c8 -r html -r text-summary node --test --no-experimental-strip-types",
     "format": "prettier --write \"src/**/*.ts\"",
     "prepare": "npm run build",
     "prepublishOnly": "npm run lint && npm run test"
