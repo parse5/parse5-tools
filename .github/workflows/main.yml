@@ -25,3 +25,5 @@ jobs:
         run: npm run lint
       - name: Test
         run: npm run test
+        env:
+          NODE_OPTIONS: ${{ matrix.node-version != 20 && '--no-experimental-strip-types' || '' }}

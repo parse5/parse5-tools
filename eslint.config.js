@@ -17,7 +17,6 @@ export default [
         "allowExpressions": true
       }],
       "@typescript-eslint/explicit-member-accessibility": "error",
-      "@typescript-eslint/member-delimiter-style": "error",
       "@typescript-eslint/no-empty-interface": "error",
       "@typescript-eslint/parameter-properties": "error",
       "@typescript-eslint/no-invalid-void-type": "off"
