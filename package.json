@@ -30,13 +30,13 @@
   "homepage": "https://github.com/parse5/parse5-tools#readme",
   "devDependencies": {
     "@eslint/js": "^10.0.1",
-    "@types/node": "^25.5.0",
+    "@types/node": "^25.5.2",
     "c8": "^11.0.0",
-    "eslint": "^10.0.3",
+    "eslint": "^10.2.0",
     "premove": "^4.0.0",
     "prettier": "^3.8.1",
-    "typescript": "^5.9.3",
-    "typescript-eslint": "^8.57.1"
+    "typescript": "^6.0.2",
+    "typescript-eslint": "^8.58.0"
   },
   "peerDependencies": {
     "parse5": "7.x || 8.x"
