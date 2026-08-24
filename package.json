@@ -32,7 +32,7 @@
     "@eslint/js": "^10.0.1",
     "@types/node": "^26.2.0",
     "c8": "^12.0.0",
-    "eslint": "^10.8.1",
+    "eslint": "^10.9.0",
     "premove": "^4.0.0",
     "prettier": "^3.9.6",
     "typescript": "npm:@typescript/typescript6@^6.0.2",
